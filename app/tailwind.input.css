@@ -1,0 +1,672 @@
+/* Acme Coffee Roasters styles: Tailwind CSS v4 plus this template's customizations.
+   Components use Tailwind utility classes; this file holds what utilities can't:
+   1. colour tokens for light/dark   2. the Tailwind theme built from them
+   3. base element styles           4. shared building blocks (.button, .label, .stamp, ...)
+   5. illustrations and animation   6. stateful pieces styled by data attributes */
+@import 'tailwindcss';
+
+/* `dark:` follows the jamstacks theme toggle (html.dark). Prefer colour tokens instead. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------
+   1. Colour tokens. Change the palette here.
+   Light mode is "kraft": paper bags, cream labels and espresso ink. Dark mode is "espresso":
+   dark roast surfaces with crema gold. Every colour that changes with the theme is a variable
+   here, so components use utilities like `bg-surface text-ink` and never need `dark:` variants.
+   ------------------------------------------------------------------ */
+:root {
+  --bg: #e8dcc6;
+  --bg-band: #dfd0b4;
+  --surface: #f8f2e5;
+  --surface-2: #f0e6d2;
+  --text: #24170f;
+  --muted: #5c4836;
+  --line: #cbb594;
+  --rule: rgba(36, 23, 15, .78);
+  --accent: #b8471b;
+  --accent-strong: #8e3512;
+  --accent-soft: #f2d6c3;
+  --accent-2: #3d5a73;
+  --accent-2-soft: #d6dee2;
+  --on-accent: #ffffff;
+  --danger: #a12f2a;
+  --success: #3f6b3a;
+  --focus: #3d5a73;
+  --elev-1: 0 1px 1px rgba(60, 35, 15, .10), 0 4px 10px -2px rgba(60, 35, 15, .12);
+  --elev-2: 0 2px 3px rgba(60, 35, 15, .10), 0 26px 46px -20px rgba(70, 40, 15, .42);
+  --press-color: #24170f;
+  --button-edge: #24170f;
+  --ghost-edge: #24170f;
+  /* Paper grain: a neutral grey detail tile blended over --bg, so the colour always comes from the tokens. */
+  --paper: url('./textures/kraft-grain.webp');
+
+  /* Tasting-note families (chip dots) */
+  --taste-fruity: #c23b3b;
+  --taste-floral: #9561ad;
+  --taste-sweet: #d39a1f;
+  --taste-nutty: #a2774a;
+  --taste-chocolate: #5a3422;
+  --taste-spice: #d0652a;
+
+  /* Roast meter: one colour per level, light to dark */
+  --roast-1: #c9965f;
+  --roast-2: #a8703f;
+  --roast-3: #85502a;
+  --roast-4: #613619;
+  --roast-5: #3a1f0e;
+  --roast-empty: transparent;
+
+  /* Hero coffee bag */
+  --bag: #b98a57;
+  --bag-shade: #9b6d3f;
+  --bag-light: #cfa574;
+  --bag-seal: #a77847;
+  --bag-edge: #8d6136;
+  --bag-print: #2c1b10;
+  --label: #fbf6ea;
+  --label-ink: #24170f;
+  --label-muted: #6a5543;
+  --bean: #5d3720;
+  --bean-crease: #2d180b;
+  --bean-shine: rgba(255, 235, 205, .22);
+  --cup: #f9f4ea;
+  --cup-line: #24170f;
+  --crema: #b97a3c;
+  --steam: rgba(36, 23, 15, .32);
+  --glow: rgba(255, 242, 214, .85);
+  --stamp: #b8471b;
+
+  /* Brew-method drawings */
+  --art-line: #24170f;
+  --art-fill: #fcf8f0;
+  --art-glass: rgba(255, 255, 255, .55);
+  --art-coffee: #4a2a17;
+  --art-milk: #e7cfac;
+  --art-crema: #b8742f;
+  --art-wood: #a9784a;
+  --art-paper: #fffaf0;
+  --art-metal: #8d8a86;
+  --art-ice: rgba(255, 255, 255, .85);
+  --art-pastry: #d99c4f;
+  --art-steam: rgba(36, 23, 15, .38);
+  --art-disc: #efe4cf;
+
+  /* Craft details: masking tape, twine, kraft tags, coffee stains, pen ink and doodles */
+  --tape: rgba(236, 222, 186, .82);
+  --tape-2: rgba(61, 90, 115, .30);
+  --twine: #8f6a3f;
+  --tag: #d3b588;
+  --tag-ink: #24170f;
+  --stain: rgba(118, 66, 26, .13);
+  --pen: #3d5a73;
+  --leaf: #6f8f55;
+  --cherry: #b8362b;
+  --scrawl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 6c5-4 9-4 13-1s9 4 14 0 9-4 13-1' fill='none' stroke='%23b8471b' stroke-width='2.2' stroke-linecap='round' opacity='.75'/%3E%3C/svg%3E");
+
+  /* Google Maps embed: untouched in light mode */
+  --map-filter: sepia(.18) saturate(.9);
+
+  /* Footer band: espresso in both modes */
+  --footer-bg: #24170f;
+
+  --measure: 40rem;
+  --page: 75rem;
+  --gutter: clamp(1rem, 4.5vw, 2.75rem);
+  --space-section: clamp(3.75rem, 8vw, 6.5rem);
+  --header-h: 4.25rem;
+
+  /* --------------------------------------------------------------
+     Jamstacks component fallbacks (inherited by hosted components).
+     Published portal themes may override these on the host element.
+     Never style the component's shadow-root internals directly.
+     -------------------------------------------------------------- */
+  --jamstacks-font-family: var(--font-sans);
+  --jamstacks-font-size: 16px;
+  --jamstacks-color-primary: var(--accent);
+  --jamstacks-color-background: var(--surface);
+  --jamstacks-color-text: var(--text);
+  --jamstacks-color-muted: var(--muted);
+  --jamstacks-color-border: var(--line);
+  --jamstacks-color-danger: var(--danger);
+  --jamstacks-color-success: var(--success);
+  --jamstacks-border-radius: var(--radius-ui);
+  --jamstacks-control-height: 48px;
+  --jamstacks-spacing: 14px;
+  /* Component extension supported by the current support-form runtime: fill the page column. */
+  --jamstacks-form-max-width: 100%;
+
+  /* Shared theme toggle (jamstacks package) */
+  --jamstacks-toggle-color: var(--text);
+  --jamstacks-toggle-dark-color: var(--text);
+  --jamstacks-toggle-border: var(--rule);
+  --jamstacks-toggle-background: var(--surface);
+  --jamstacks-toggle-dark-background: var(--surface);
+
+  color-scheme: light;
+}
+
+/* Explicit choices override the device; the media fallback also works without JavaScript.
+   Keep these two blocks identical. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+    --bg: #16100c;
+    --bg-band: #1c140f;
+    --surface: #241a13;
+    --surface-2: #2c2018;
+    --text: #f2e7d5;
+    --muted: #c4b097;
+    --line: #463527;
+    --rule: rgba(242, 231, 213, .55);
+    --accent: #d9a35b;
+    --accent-strong: #efc183;
+    --accent-soft: #3c2a17;
+    --accent-2: #94b3ca;
+    --accent-2-soft: #1f2a33;
+    --on-accent: #1a110b;
+    --danger: #f09a8a;
+    --success: #a7cf9a;
+    --focus: #d9a35b;
+    --elev-1: 0 1px 2px rgba(0, 0, 0, .4);
+    --elev-2: 0 2px 4px rgba(0, 0, 0, .35), 0 28px 50px -18px rgba(0, 0, 0, .75);
+    --press-color: #070403;
+    --button-edge: #d9a35b;
+    --ghost-edge: rgba(242, 231, 213, .55);
+    --paper: url('./textures/espresso-grain.webp');
+
+    --taste-fruity: #ec7a6e;
+    --taste-floral: #c39ad6;
+    --taste-sweet: #e8b94e;
+    --taste-nutty: #c99c6c;
+    --taste-chocolate: #a77356;
+    --taste-spice: #ee8a4e;
+
+    --roast-1: #e0b27a;
+    --roast-2: #c98e55;
+    --roast-3: #a86d3c;
+    --roast-4: #8a5228;
+    --roast-5: #6b3b1a;
+
+    --bag: #241b16;
+    --bag-shade: #110c0a;
+    --bag-light: #42352c;
+    --bag-seal: #2e241e;
+    --bag-edge: #54443a;
+    --bag-print: #d9a35b;
+    --label: #efe3cb;
+    --label-ink: #24170f;
+    --label-muted: #5f4b3a;
+    --bean: #7a4a2b;
+    --bean-crease: #2a170b;
+    --bean-shine: rgba(255, 220, 170, .18);
+    --cup: #2b211b;
+    --cup-line: #e9dcc6;
+    --crema: #d9a35b;
+    --steam: rgba(255, 236, 210, .55);
+    --glow: rgba(217, 163, 91, .42);
+    --stamp: #d9a35b;
+
+    --art-line: #e9dcc6;
+    --art-fill: #2e231c;
+    --art-glass: rgba(255, 255, 255, .07);
+    --art-coffee: #6a3e20;
+    --art-milk: #d6bc96;
+    --art-crema: #d9a35b;
+    --art-wood: #8a5d36;
+    --art-paper: #3b2f25;
+    --art-metal: #a39d96;
+    --art-ice: rgba(255, 255, 255, .35);
+    --art-pastry: #c98d45;
+    --art-steam: rgba(255, 236, 210, .5);
+    --art-disc: #2c2119;
+
+    --tape: rgba(217, 190, 140, .30);
+    --tape-2: rgba(148, 179, 202, .24);
+    --twine: #b08a5a;
+    --tag: #3a2b1f;
+    --tag-ink: #f2e7d5;
+    --stain: rgba(217, 163, 91, .09);
+    --pen: #94b3ca;
+    --leaf: #7f9e66;
+    --cherry: #d4554a;
+    --scrawl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 6c5-4 9-4 13-1s9 4 14 0 9-4 13-1' fill='none' stroke='%23d9a35b' stroke-width='2.2' stroke-linecap='round' opacity='.75'/%3E%3C/svg%3E");
+
+    --map-filter: invert(.9) hue-rotate(180deg) sepia(.35) saturate(.7) brightness(.88) contrast(.92);
+
+    --footer-bg: #0e0906;
+
+    /* The hosted form draws white button text, so its primary stays dark enough to read. */
+    --jamstacks-color-primary: #a8461b;
+  }
+}
+
+:root.dark {
+  color-scheme: dark;
+  --bg: #16100c;
+  --bg-band: #1c140f;
+  --surface: #241a13;
+  --surface-2: #2c2018;
+  --text: #f2e7d5;
+  --muted: #c4b097;
+  --line: #463527;
+  --rule: rgba(242, 231, 213, .55);
+  --accent: #d9a35b;
+  --accent-strong: #efc183;
+  --accent-soft: #3c2a17;
+  --accent-2: #94b3ca;
+  --accent-2-soft: #1f2a33;
+  --on-accent: #1a110b;
+  --danger: #f09a8a;
+  --success: #a7cf9a;
+  --focus: #d9a35b;
+  --elev-1: 0 1px 2px rgba(0, 0, 0, .4);
+  --elev-2: 0 2px 4px rgba(0, 0, 0, .35), 0 28px 50px -18px rgba(0, 0, 0, .75);
+  --press-color: #070403;
+  --button-edge: #d9a35b;
+  --ghost-edge: rgba(242, 231, 213, .55);
+  --paper: url('./textures/espresso-grain.webp');
+
+  --taste-fruity: #ec7a6e;
+  --taste-floral: #c39ad6;
+  --taste-sweet: #e8b94e;
+  --taste-nutty: #c99c6c;
+  --taste-chocolate: #a77356;
+  --taste-spice: #ee8a4e;
+
+  --roast-1: #e0b27a;
+  --roast-2: #c98e55;
+  --roast-3: #a86d3c;
+  --roast-4: #8a5228;
+  --roast-5: #6b3b1a;
+
+  --bag: #241b16;
+  --bag-shade: #110c0a;
+  --bag-light: #42352c;
+  --bag-seal: #2e241e;
+  --bag-edge: #54443a;
+  --bag-print: #d9a35b;
+  --label: #efe3cb;
+  --label-ink: #24170f;
+  --label-muted: #5f4b3a;
+  --bean: #7a4a2b;
+  --bean-crease: #2a170b;
+  --bean-shine: rgba(255, 220, 170, .18);
+  --cup: #2b211b;
+  --cup-line: #e9dcc6;
+  --crema: #d9a35b;
+  --steam: rgba(255, 236, 210, .55);
+  --glow: rgba(217, 163, 91, .42);
+  --stamp: #d9a35b;
+
+  --art-line: #e9dcc6;
+  --art-fill: #2e231c;
+  --art-glass: rgba(255, 255, 255, .07);
+  --art-coffee: #6a3e20;
+  --art-milk: #d6bc96;
+  --art-crema: #d9a35b;
+  --art-wood: #8a5d36;
+  --art-paper: #3b2f25;
+  --art-metal: #a39d96;
+  --art-ice: rgba(255, 255, 255, .35);
+  --art-pastry: #c98d45;
+  --art-steam: rgba(255, 236, 210, .5);
+  --art-disc: #2c2119;
+
+  --tape: rgba(217, 190, 140, .30);
+  --tape-2: rgba(148, 179, 202, .24);
+  --twine: #b08a5a;
+  --tag: #3a2b1f;
+  --tag-ink: #f2e7d5;
+  --stain: rgba(217, 163, 91, .09);
+  --pen: #94b3ca;
+  --leaf: #7f9e66;
+  --cherry: #d4554a;
+  --scrawl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 6c5-4 9-4 13-1s9 4 14 0 9-4 13-1' fill='none' stroke='%23d9a35b' stroke-width='2.2' stroke-linecap='round' opacity='.75'/%3E%3C/svg%3E");
+
+  --map-filter: invert(.9) hue-rotate(180deg) sepia(.35) saturate(.7) brightness(.88) contrast(.92);
+
+  --footer-bg: #0e0906;
+
+  /* The hosted form draws white button text, so its primary stays dark enough to read. */
+  --jamstacks-color-primary: #a8461b;
+}
+
+/* ------------------------------------------------------------------
+   2. Tailwind theme. Only this template's palette exists: Tailwind's default colours
+   are switched off so new UI can't drift into a generic look.
+   ------------------------------------------------------------------ */
+@theme {
+  --color-*: initial;
+  --breakpoint-xs: 27.5rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 62rem;
+  --breakpoint-xl: 80rem;
+}
+
+@theme static {
+  --font-display: "Roboto Slab Variable", Rockwell, "Roboto Slab", Georgia, serif;
+  --font-sans: "Work Sans Variable", "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat Variable", "Segoe Print", "Bradley Hand", cursive;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius-ui: 6px;
+  --radius-card: 10px;
+  --radius-panel: 14px;
+}
+
+@theme inline {
+  --color-white: #fff;
+  --color-bg: var(--bg);
+  --color-band: var(--bg-band);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-soft: var(--accent-2-soft);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-label: var(--label);
+  --color-label-ink: var(--label-ink);
+  --color-label-muted: var(--label-muted);
+  --color-stamp: var(--stamp);
+  --color-pen: var(--pen);
+  --color-tag: var(--tag);
+  --color-tag-ink: var(--tag-ink);
+  --color-footer: var(--footer-bg);
+  /* Footer text sits on the always-dark espresso band in both modes. */
+  --color-footer-ink: #efe3cf;
+  --color-footer-muted: #bba68b;
+  --color-footer-accent: #e6b36f;
+  --shadow-card: var(--elev-1);
+  --shadow-lift: var(--elev-2);
+  --shadow-press: 3px 3px 0 var(--press-color);
+}
+
+/* Layout helpers used across pages. */
+@utility wrap {
+  width: min(100% - 2 * var(--gutter), var(--page));
+  margin-inline: auto;
+}
+@utility section-y {
+  padding-block: var(--space-section);
+}
+/* The paper texture on any coloured band, e.g. `bg-band paper`. */
+@utility paper {
+  background-image: var(--paper);
+  background-size: 520px;
+  background-blend-mode: soft-light;
+}
+/* Typewriter label text: ORIGIN · ETHIOPIA · WASHED */
+@utility label-text {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------
+   3. Base elements
+   ------------------------------------------------------------------ */
+@layer base {
+  html { background: var(--bg); scroll-padding-top: calc(var(--header-h) + 1rem); }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Real paper texture (see --paper), tinted by the theme colour underneath. */
+    background: var(--paper) 0 0 / 520px repeat, var(--bg);
+    background-blend-mode: soft-light;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { flex: 1; outline: none; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; }
+  /* Accent words get a hand-drawn underline (the --scrawl token holds the pen stroke for each theme). */
+  h1 em, h2 em { color: var(--accent); font-style: normal; background: var(--scrawl) left bottom / auto .3em repeat-x; padding-bottom: .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  p { text-wrap: pretty; }
+  abbr[title] { text-decoration: none; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--accent-soft); color: var(--text); }
+  @media (width < 40rem) {
+    :root { --header-h: 3.75rem; }
+    body { font-size: 1rem; }
+  }
+}
+
+/* ------------------------------------------------------------------
+   4. Shared building blocks. Reuse these instead of restyling each instance.
+   ------------------------------------------------------------------ */
+@layer components {
+  /* Letterpress buttons: flat ink with a hard offset shadow. */
+  .button {
+    display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+    min-height: 3rem; padding: .7rem 1.35rem;
+    border: 2px solid var(--button-edge); border-radius: var(--radius-ui);
+    background: var(--accent); color: var(--on-accent);
+    font: inherit; font-weight: 650; letter-spacing: .01em; text-decoration: none; cursor: pointer;
+    box-shadow: 3px 3px 0 var(--press-color);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .button:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--press-color); }
+  .button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--press-color); }
+  .button-ghost { background: var(--surface); color: var(--text); border-color: var(--ghost-edge); }
+  .button-quiet { min-height: 2.5rem; padding: .4rem 1rem; background: transparent; color: var(--text); border: 1.5px solid var(--rule); box-shadow: none; font-weight: 600; }
+  .button-quiet:hover { transform: none; box-shadow: none; border-color: var(--accent); }
+
+  .text-link {
+    color: var(--accent); font-weight: 600;
+    text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .22em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .text-link:hover { text-decoration-color: var(--accent); }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: var(--font-mono); font-size: .76rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .eyebrow::before { content: ""; width: .55rem; height: .55rem; border: 1.5px solid currentColor; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--bg), inset 0 0 0 4px currentColor; }
+
+  /* Filter and shortcut chips. */
+  .chip {
+    display: inline-flex; align-items: center; gap: .4rem;
+    min-height: 2.25rem; padding: .3rem .85rem;
+    border: 1.5px solid var(--rule); border-radius: 999px;
+    background: var(--surface); color: var(--text);
+    font: inherit; font-size: .9rem; font-weight: 550; text-decoration: none; white-space: nowrap; cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+  /* Tasting note with a flavour-family dot. Set --dot with the family token. */
+  .taste {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .12rem .6rem .12rem .45rem; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--dot) 45%, var(--line)); background: color-mix(in srgb, var(--dot) 10%, transparent);
+    font-size: .84rem; font-weight: 550; line-height: 1.5; white-space: nowrap;
+  }
+  .taste::before { content: ""; width: .6rem; height: .6rem; flex: none; border-radius: 50%; background: var(--dot); box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, .12); }
+  .taste-fruity { --dot: var(--taste-fruity); }
+  .taste-floral { --dot: var(--taste-floral); }
+  .taste-sweet { --dot: var(--taste-sweet); }
+  .taste-nutty { --dot: var(--taste-nutty); }
+  .taste-chocolate { --dot: var(--taste-chocolate); }
+  .taste-spice { --dot: var(--taste-spice); }
+
+  .sticker {
+    display: inline-flex; align-items: center;
+    padding: .05rem .5rem; border-radius: 3px;
+    font-family: var(--font-mono); font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    border: 1.5px solid currentColor; color: var(--accent);
+  }
+  .sticker-seasonal { color: var(--accent-2); }
+  .sticker-new { color: var(--success); }
+  .sticker-soldout { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+  /* A plain surface card. Combine with padding utilities. */
+  .card { border-radius: var(--radius-card); border: 1.5px solid var(--line); background: var(--surface); }
+
+  /* A printed bag label: cream stock with a double ink rule. */
+  .label {
+    position: relative; border-radius: var(--radius-ui);
+    background: var(--paper) 0 0 / 520px repeat, var(--surface); background-blend-mode: soft-light;
+    box-shadow: inset 0 0 0 1.5px var(--rule), inset 0 0 0 5px var(--surface), inset 0 0 0 6px color-mix(in srgb, var(--rule) 55%, transparent), var(--elev-1);
+  }
+
+  /* Ink stamp: rough edges, a slight rotation and a settle animation on load. */
+  .stamp {
+    display: inline-flex; align-items: center; gap: .45rem;
+    padding: .25rem .65rem; border: 2px solid currentColor; border-radius: 4px;
+    color: var(--stamp); font-family: var(--font-mono); font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; line-height: 1.3;
+    rotate: -4deg; filter: url(#ink-rough); opacity: .92;
+    animation: stamp-in .55s cubic-bezier(.3, 1.6, .5, 1) both;
+  }
+
+  /* Handwritten pen notes. Use sparingly: a few words, never body copy. */
+  .hand { font-family: var(--font-hand); font-weight: 600; line-height: 1; color: var(--pen); letter-spacing: 0; }
+
+  /* A strip of masking tape. Position it with utilities (absolute, -top-3, left-1/2, rotate…). */
+  .tape {
+    position: absolute; z-index: 3; width: 5.75rem; height: 1.55rem; pointer-events: none;
+    background: var(--tape); box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+    clip-path: polygon(3% 0, 97% 0, 100% 16%, 96% 32%, 100% 50%, 96% 66%, 100% 84%, 97% 100%, 3% 100%, 0 84%, 4% 66%, 0 50%, 4% 32%, 0 16%);
+  }
+  .tape-blue { background: var(--tape-2); }
+
+  /* Torn paper edges for bands: the edge is a mask filled with the band's own colour. */
+  .torn { position: relative; }
+  .torn::before, .torn::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 14px; background: inherit; background-blend-mode: inherit; pointer-events: none;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='14' viewBox='0 0 240 14' preserveAspectRatio='none'%3E%3Cpath d='M0 15V7L8 4L15 8L24 3L30 6L41 2L46 7L56 4L64 6L73 1L80 5L90 3L96 6L105 2L113 7L120 4L130 6L136 2L145 5L153 3L160 7L169 2L177 5L183 3L193 7L200 4L209 6L217 2L223 7L231 4L240 7V15z'/%3E%3C/svg%3E") 0 0 / 240px 14px repeat-x; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='14' viewBox='0 0 240 14' preserveAspectRatio='none'%3E%3Cpath d='M0 15V7L8 4L15 8L24 3L30 6L41 2L46 7L56 4L64 6L73 1L80 5L90 3L96 6L105 2L113 7L120 4L130 6L136 2L145 5L153 3L160 7L169 2L177 5L183 3L193 7L200 4L209 6L217 2L223 7L231 4L240 7V15z'/%3E%3C/svg%3E") 0 0 / 240px 14px repeat-x;
+  }
+  .torn::before { bottom: calc(100% - 1px); }
+  .torn::after { top: calc(100% - 1px); transform: scaleY(-1); }
+  .torn-top::after { display: none; }
+
+  /* Kraft hang tag with a punched hole, for bag prices. */
+  .hang-tag {
+    display: inline-flex; align-items: baseline; gap: .5rem; padding: .3rem .75rem .3rem 1.45rem;
+    background: radial-gradient(circle at .72rem 50%, transparent .2rem, color-mix(in srgb, var(--tag-ink) 35%, transparent) .21rem, var(--tag) .3rem);
+    color: var(--tag-ink); rotate: -1.5deg;
+    clip-path: polygon(.6rem 0, 100% 0, 100% 100%, .6rem 100%, 0 50%);
+  }
+  .hang-tag:nth-child(even) { rotate: 1.5deg; }
+}
+
+/* ------------------------------------------------------------------
+   5. Illustrations and animation (SVG art is coloured by the tokens above)
+   ------------------------------------------------------------------ */
+@layer components {
+  .hero-art { position: relative; container-type: inline-size; }
+  .hero-art > svg { width: 100%; height: auto; overflow: visible; display: block; }
+  /* Warm light in kraft mode, a soft steam glow in espresso mode. */
+  .hero-art::before {
+    content: ""; position: absolute; inset: 4% 2% 8%; z-index: -1; border-radius: 50%; filter: blur(42px);
+    background: radial-gradient(circle at 50% 42%, var(--glow), transparent 68%);
+  }
+  /* The label printed on the bag (HTML, so long names wrap). Sizes follow the art's width. */
+  .bag-label {
+    position: absolute; left: 30.6%; width: 38.8%; top: 32.5%; height: 48%;
+    display: flex; flex-direction: column; gap: 1.2cqi; padding: 2.6cqi 2.8cqi;
+    background: var(--label); color: var(--label-ink); border-radius: 1cqi;
+    box-shadow: inset 0 0 0 .35cqi var(--label-ink), inset 0 0 0 1.1cqi var(--label), inset 0 0 0 1.35cqi var(--label-ink), 0 .6cqi 1.4cqi rgba(0, 0, 0, .18);
+    rotate: -1.2deg; overflow: hidden;
+    /* The label is always cream stock, so outlines use its ink in both modes. */
+    --rule: color-mix(in srgb, var(--label-ink) 60%, transparent);
+  }
+  .bag-label__band { height: 1.4cqi; margin: -.4cqi -1cqi 0; background: var(--tint); border-radius: .4cqi; }
+  .bag-label .label-mono { font-family: var(--font-mono); font-size: 1.85cqi; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; line-height: 1.35; }
+  .bag-label__name { font-family: var(--font-display); font-size: 6.4cqi; font-weight: 800; line-height: .95; letter-spacing: -.02em; }
+  .bag-label__notes { font-size: 2.75cqi; line-height: 1.4; font-weight: 500; }
+  .bag-label__notes li::before { content: "— "; color: var(--tint); font-weight: 800; }
+
+  .steam path { animation: steam 3.4s ease-in-out infinite; }
+  .steam path:nth-child(2) { animation-delay: 1.1s; }
+  .steam path:nth-child(3) { animation-delay: 2.2s; }
+  .drip { animation: drip 2.2s ease-in infinite; }
+  .drip + .drip { animation-delay: 1.1s; }
+  .hero-stamp { transform-box: fill-box; transform-origin: center; animation: stamp-in .7s .35s cubic-bezier(.3, 1.6, .5, 1) both; }
+  .hero-stamp__ring { animation: spin 60s linear infinite; transform-box: fill-box; transform-origin: center; }
+
+  /* Brew-method drawings sit on a small stamped disc. */
+  .brew-art { position: relative; display: inline-grid; place-items: center; flex: none; border-radius: 50%; background: var(--art-disc); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--rule) 35%, transparent); }
+  .brew-art::after { content: ""; position: absolute; inset: 5%; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--rule) 40%, transparent); }
+  .brew-art svg { position: relative; z-index: 1; width: 84%; height: 84%; overflow: visible; }
+
+  /* The footer is espresso in both modes, so it always uses the dark grain. */
+  .site-footer { background-image: url('./textures/espresso-grain.webp'); background-size: 520px; background-blend-mode: soft-light; }
+
+  /* Footer edge: a row of beans and cups printed along the top of the espresso band. */
+  .footer-edge {
+    height: 22px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='22' viewBox='0 0 88 22'%3E%3Cg fill='none' stroke='%23e6b36f' stroke-width='1.4' stroke-linecap='round' opacity='.75'%3E%3Cellipse cx='14' cy='11' rx='5.2' ry='7.2' transform='rotate(28 14 11)'/%3E%3Cpath d='M11.4 5.6c3.4 3 .2 7.8 5.2 10.8'/%3E%3Cpath d='M51 8h13v4.5a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5z'/%3E%3Cpath d='M64 9.5h1.6a2 2 0 0 1 0 4H64M49 19.5h17'/%3E%3C/g%3E%3C/svg%3E") repeat-x center / auto 22px;
+  }
+
+  /* Google Maps embed; --map-filter matches it to the theme. */
+  .map { position: relative; overflow: hidden; min-height: 20rem; border-radius: var(--radius-panel); border: 1.5px solid var(--rule); background: var(--surface-2); box-shadow: var(--elev-1); }
+  .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: var(--map-filter); }
+
+  @keyframes steam { 0% { opacity: 0; transform: translateY(8px) scaleX(.9); } 35% { opacity: 1; } 100% { opacity: 0; transform: translateY(-14px) scaleX(1.1); } }
+  @keyframes drip { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(9px); } }
+  @keyframes stamp-in { from { opacity: 0; scale: 1.35; } 60% { opacity: .95; } to { scale: 1; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes open-pulse { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--success) 0%, transparent); } }
+}
+
+/* ------------------------------------------------------------------
+   6. Stateful pieces styled by attributes the components set
+   ------------------------------------------------------------------ */
+@layer components {
+  .open-badge__dot { width: .6rem; height: .6rem; border-radius: 50%; background: var(--muted); }
+  [data-open="true"] > .open-badge__dot { background: var(--success); box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 25%, transparent); animation: open-pulse 2.4s ease-in-out infinite; }
+  [data-open="false"] > .open-badge__dot { background: var(--accent); }
+
+  .menu-item:target, .bean-card:target, .guide-card:target { box-shadow: 0 0 0 3px var(--accent), var(--elev-2); }
+  .menu-item[data-available="false"] .brew-art { filter: grayscale(.9); opacity: .55; }
+  .bean-card[data-available="false"] .bean-card__body { opacity: .62; }
+
+  .faq summary { list-style: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; border: 1.5px solid var(--rule); font-family: var(--font-mono); font-size: 1.1rem; transition: transform .2s ease; }
+  .faq[open] summary::after { transform: rotate(45deg); background: var(--text); color: var(--bg); }
+
+  /* Hosted Jamstacks form host (components/jamstacks-support-form.tsx). */
+  .enquiry { position: relative; padding: clamp(1rem, 3vw, 2rem); border-radius: var(--radius-panel); background: var(--surface); border: 1.5px solid var(--rule); box-shadow: var(--elev-1); }
+  .enquiry__host { display: block; }
+  .enquiry[data-state="loading"], .enquiry[data-state="loaded"] { min-height: 34rem; border-style: dashed; box-shadow: none; }
+  .enquiry__status { padding: 1.25rem 0 0; color: var(--muted); font-size: .9875rem; }
+  .enquiry__status:empty { display: none; }
+  .enquiry[data-state="error"] .enquiry__status,
+  .enquiry[data-state="slow"] .enquiry__status { padding: 1.1rem 1.4rem; border-radius: var(--radius-ui); border-left: 4px solid var(--accent); background: var(--surface-2); color: var(--text); }
+  @media (width < 40rem) { .enquiry[data-state="loading"], .enquiry[data-state="loaded"] { min-height: 30rem; } }
+
+  .copy-status:empty { display: none; }
+  .scrollbar-none { scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+@media print {
+  body { background: #fff; color: #000; }
+  body, .label, .paper, .site-footer { background-image: none; }
+  .site-header { position: static; backdrop-filter: none; }
+  .menu-item, .bean-card, .guide-card { break-inside: avoid; box-shadow: none; }
+  .site-footer { background: #fff; color: #000; }
+  .footer-edge { display: none; }
+}

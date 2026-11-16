@@ -1,0 +1,10 @@
+{
+  "name": "Acme Coffee Roasters",
+  "description": "Specialty coffee and a micro-roastery in Midtown Manhattan. What's on the bar today, beans to take home, opening hours and how to find us.",
+  "domain": "",
+  "timeZone": "America/New_York",
+  "jamstacks": {
+    "siteId": "",
+    "cdnUrl": "https://cdn.jamstacks.net"
+  }
+}

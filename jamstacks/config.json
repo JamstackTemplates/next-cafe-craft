@@ -1,0 +1,19 @@
+{
+  "name": "Craft cafe",
+  "description": "A specialty coffee theme for cafés and roasteries: single-origin profiles with tasting notes, brew methods, beans to take home, opening hours, location and a Jamstacks contact component for wholesale and cupping enquiries.",
+  "tech": "next",
+  "type": "cafe",
+  "style": "craft",
+  "internal": false,
+  "components": [
+    "support-form"
+  ],
+  "configFile": "site.config.json",
+  "screenshots": {
+    "light": "jamstacks/home-light.jpg",
+    "dark": "jamstacks/home-dark.jpg",
+    "theme": {
+      "strategy": "media"
+    }
+  }
+}
