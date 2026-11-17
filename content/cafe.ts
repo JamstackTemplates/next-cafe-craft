@@ -78,12 +78,12 @@ export interface Cafe {
 }
 
 export const cafe: Cafe = {
-  name: 'Acme Coffee Roasters',
+  name: 'Kraft & Crema Roasters',
   tagline: 'Specialty coffee · roasted weekly in New York',
   introduction:
     'A brew bar and micro-roastery on the square. Two coffees on the bar every day, beans roasted a few feet from the counter, and someone happy to talk you through both.',
   story: [
-    'Acme started as a 5-kilo roaster in a borrowed corner and a list of farms we wanted to taste. The roaster is bigger now, but the idea hasn’t changed: buy great green coffee, roast it carefully, and brew it the way it wants to be brewed.',
+    'Kraft & Crema started as a 5-kilo roaster in a borrowed corner and a list of farms we wanted to taste. The roaster is bigger now, but the idea hasn’t changed: buy great green coffee, roast it carefully, and brew it the way it wants to be brewed.',
     'We roast every Tuesday and Friday, cup every batch before it reaches the bar, and keep the menu short so each coffee gets the attention it deserves. Ask for a taste of anything on the shelf.',
   ],
   email: 'hello@example.com',

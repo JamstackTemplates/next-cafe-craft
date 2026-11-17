@@ -37,7 +37,10 @@ export default function HomePage() {
             <CoffeeRing className="absolute -bottom-24 -left-28 -z-10 max-sm:hidden" size={230} />
             <OpenBadge />
             <h1 id="hero-title" className="mt-6 mb-5 grid gap-4">
-              <span className="text-[clamp(3rem,7.6vw,5.9rem)] leading-[.92] font-extrabold tracking-[-.035em]">{cafe.name}</span>
+              <span className="text-[clamp(2.9rem,6.6vw,5.2rem)] leading-[.95] font-extrabold tracking-[-.035em]">
+                {/* An ampersand in the name is set in the accent colour, like a printed logotype. */}
+                {cafe.name.split(/(&)/).map((part, index) => part === '&' ? <span key={index} className="font-normal text-accent">&amp;</span> : part)}
+              </span>
               <span className="label-text text-[clamp(.74rem,1.2vw,.86rem)] font-medium text-accent">{cafe.tagline}</span>
             </h1>
             <p className="max-w-xl text-[clamp(1.08rem,1.6vw,1.24rem)]">{cafe.introduction}</p>
@@ -203,7 +206,7 @@ export default function HomePage() {
 
         <figure className="label relative rotate-[.6deg] p-6 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
           <span className="tape -top-3 left-1/2 -translate-x-1/2 -rotate-2" aria-hidden="true" />
-          <CoffeeRing className="absolute -right-3 -bottom-12 z-10 sm:-right-10" size={150} />
+          <CoffeeRing className="absolute -right-3 -bottom-12 z-10 lg:-right-10" size={150} />
           <div className="flex items-start justify-between gap-4 border-b-2 border-rule pb-4">
             <div>
               <p className="label-text text-[.68rem] text-muted">{cafe.name}</p>

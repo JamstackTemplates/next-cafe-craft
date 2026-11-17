@@ -29,6 +29,9 @@ export function HeroBag() {
   const bean = featuredBean;
   const number = String(beans.indexOf(bean) + 1).padStart(2, '0');
   const summary = `${cafe.name} coffee bag. Featured coffee: ${bean.name}, ${bean.country}, ${PROCESSES[bean.process].label.toLowerCase()} process, tasting of ${bean.notes.map(note => note.note.toLowerCase()).join(', ')}.`;
+  // The name is printed across the bag: shrink the type for longer names so it clears the twine.
+  const brand = cafe.name.toUpperCase();
+  const brandSize = Math.min(12.5, 208 / (brand.length * 0.8));
   const stampText = `Roasted in ${cafe.address.locality} ✦ Small batch ✦ `.toUpperCase();
 
   return (
@@ -57,8 +60,8 @@ export function HeroBag() {
         <path d="M150 108l9 5-9 5" fill="var(--bg)" opacity=".9" />
         <circle cx="280" cy="149" r="8.5" fill="var(--bag-seal)" stroke="var(--bag-edge)" strokeWidth="2" />
         <circle cx="280" cy="149" r="3.6" fill="none" stroke="var(--bag-edge)" strokeWidth="1.6" />
-        <text x="280" y="180" textAnchor="middle" fill="var(--bag-print)" fontFamily="var(--font-mono)" fontSize="12.5" fontWeight="600" letterSpacing="2.6">
-          {cafe.name.toUpperCase()}
+        <text x="280" y="180" textAnchor="middle" fill="var(--bag-print)" fontFamily="var(--font-mono)" fontSize={brandSize} fontWeight="600" letterSpacing={brandSize * .2}>
+          {brand}
         </text>
         {/* Twine tied round the seal, with a kraft hang tag */}
         <g fill="none" stroke="var(--twine)" strokeLinecap="round">

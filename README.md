@@ -1,10 +1,10 @@
-# Acme Coffee Roasters: Craft café (Next.js)
+# Kraft & Crema Roasters: Craft café (Next.js)
 
 A specialty coffee theme for cafés and roasteries: single-origin profiles with tasting notes, brew methods, beans to take home, opening hours, location and a [Jamstacks](https://jamstacks.net) contact component for wholesale and cupping enquiries.
 
 It exports to plain static files, deploys to GitHub Pages (custom domain or `/repository/` path) and works with no backend. Light mode is **kraft**: paper-bag brown, cream labels and espresso ink. Dark mode is **espresso**: dark roast surfaces with crema gold. Both follow the visitor's device unless they pick one with the header toggle.
 
-**Acme Coffee Roasters**, its coffees, producers, menu and contact details are fictitious placeholders. Coffee regions, processes and varieties are real, but producers are described generically. The sample address is a public landmark, 20 Times Square in New York, so the map has something real to show. Replace all of it with your own.
+**Kraft & Crema Roasters**, its coffees, producers, menu and contact details are fictitious placeholders. Coffee regions, processes and varieties are real, but producers are described generically. The sample address is a public landmark, 20 Times Square in New York, so the map has something real to show. Replace all of it with your own.
 
 ## Pages
 
@@ -142,7 +142,7 @@ The footer ends with "with ❤️ [jamstacks.net](https://jamstacks.net)". It's 
 
 ```json
 {
-  "name": "Acme Coffee Roasters",
+  "name": "Kraft & Crema Roasters",
   "description": "Specialty coffee and a micro-roastery in Midtown Manhattan. …",
   "domain": "",
   "timeZone": "America/New_York",
@@ -245,7 +245,7 @@ jamstacks/            optional template publishing metadata and gallery captures
 
 ## Before publishing your website
 
-- Replace Acme Coffee Roasters, the address (and its `note`), directions, email, phone, coffees, producers, prices, menu, FAQs and social links with your own details.
+- Replace Kraft & Crema Roasters, the address (and its `note`), directions, email, phone, coffees, producers, prices, menu, FAQs and social links with your own details.
 - Set what's on the bar today and your featured coffee.
 - Set your real opening hours and `timeZone` in `site.config.json`, and check the "open now" badge.
 - Update the site title/description, icon and social preview image. Set the correct public domain or Pages URL.
