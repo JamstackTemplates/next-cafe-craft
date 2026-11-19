@@ -31,7 +31,7 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(cafeStructuredData()) }} />
 
       {/* Hero */}
-      <section className="overflow-hidden pt-[clamp(1.75rem,5vw,3.75rem)] pb-[clamp(1.5rem,4vw,3rem)]" aria-labelledby="hero-title">
+      <section className="overflow-hidden pt-[clamp(2.5rem,5vw,3.75rem)] pb-[clamp(1.5rem,4vw,3rem)]" aria-labelledby="hero-title">
         <div className="wrap grid items-center gap-[clamp(1.5rem,4vw,3.5rem)] lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
           <div className="relative isolate">
             <CoffeeRing className="absolute -bottom-24 -left-28 -z-10 max-sm:hidden" size={230} />

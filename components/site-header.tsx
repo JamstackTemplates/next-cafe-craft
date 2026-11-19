@@ -11,7 +11,7 @@ const navigation = [
 
 export function SiteHeader() {
   return (
-    <header className="site-header sticky top-0 z-50 border-b-2 border-rule bg-bg/88 backdrop-blur-md">
+    <header className="site-header sticky top-0 z-50 bg-bg/88 backdrop-blur-md">
       <div className="wrap flex min-h-(--header-h) items-center justify-between gap-3">
         <SiteLink href="/" className="inline-flex min-w-0 items-center gap-2.5 no-underline">
           <Logo />
