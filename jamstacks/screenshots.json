@@ -2,21 +2,21 @@
   "templateId": "next-cafe-craft",
   "viewport": {
     "width": 1440,
-    "height": 900
+    "height": 800
   },
   "fullPage": false,
   "captures": [
     {
       "mode": "light",
-      "sha256": "d9437a1610640bf7a44cce247e1aafb9ac0edefba10a5087728276f31e96c097",
+      "sha256": "adf38d0d515b5a238d83db6e19b235fa43334cbc626075a39b3edf8b63a53b38",
       "file": "jamstacks/home-light.jpg",
-      "bytes": 202238
+      "bytes": 195211
     },
     {
       "mode": "dark",
-      "sha256": "79e4cd79e681312f2fb93296e01eae0e0b9723b252cccddf1ac70b9f2e0cc400",
+      "sha256": "0a79f65106cfa65edb3495b611d6f34c47fcf304eec8b1ffe49386dec88c0fd2",
       "file": "jamstacks/home-dark.jpg",
-      "bytes": 186490
+      "bytes": 181465
     }
   ]
 }
